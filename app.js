@@ -138,7 +138,7 @@ var getTopAnswerers = function(tags) {
 	
 	
 	var inputTag = $('input[name="answerers"]').val();
-	var tag = 'http://api.stackexchange.com/2.2/tags/'+inputTag+'/top-answerers/all_time';
+	var tag = 'http://api.stackexchange.com/2.2/tags/'+ inputTag +'/top-answerers/all_time';
 
 
 	var result = $.ajax({
