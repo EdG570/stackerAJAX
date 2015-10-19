@@ -6,6 +6,15 @@ $(document).ready( function() {
 		var tags = $(this).find("input[name='tags']").val();
 		getUnanswered(tags);
 	});
+
+	$('.inspiration-getter').submit(function(event){
+      event.preventDefault();
+
+      $('.results').html('');
+
+      var answerers = $('input[name="answerers"]').val();
+      getTopAnswerers(answerers);
+  });
 });
 
 // this function takes the question object returned by StackOverflow 
@@ -42,6 +51,35 @@ var showQuestion = function(question) {
 };
 
 
+
+var showAnswerers = function(question) {
+	
+	// clone our result template code
+	var result = $('.templates .answerers').clone();
+	
+	// Set the user image in result
+	var questionElemImg = result.find('.user-image img');
+	questionElemImg.attr('src', question.user.profile_image);
+
+	// set the user alias with link to profile
+	var questionElem = result.find('.name-text a');
+	questionElem.attr('href', question.user.link);
+	questionElem.text(question.user.display_name);
+	
+
+	// set the reputation in result
+	var rep = result.find('.reputation');
+	rep.text(question.user.reputation);
+
+	// set the score in result
+	var score = result.find('.score');
+	score.text(question.score);
+
+
+	return result;
+};
+
+
 // this function takes the results object from StackOverflow
 // and creates info about search results to be appended to DOM
 var showSearchResults = function(query, resultNum) {
@@ -64,7 +102,8 @@ var getUnanswered = function(tags) {
 	var request = {tagged: tags,
 								site: 'stackoverflow',
 								order: 'desc',
-								sort: 'creation'};
+								sort: 'creation'
+							};
 	
 	var result = $.ajax({
 		url: "http://api.stackexchange.com/2.2/questions/unanswered",
@@ -79,6 +118,42 @@ var getUnanswered = function(tags) {
 
 		$.each(result.items, function(i, item) {
 			var question = showQuestion(item);
+			$('.results').append(question);
+		});
+	})
+	.fail(function(jqXHR, error, errorThrown){
+		var errorElem = showError(error);
+		$('.search-results').append(errorElem);
+	});
+};
+
+var getTopAnswerers = function(tags) {
+	
+	// the parameters we need to pass in our request to StackOverflow's API
+	var request = {tagged: tags,
+								site: 'stackoverflow',
+								order: 'desc',
+								sort: 'creation'
+							};
+	
+	
+	var inputTag = $('input[name="answerers"]').val();
+	var tag = 'http://api.stackexchange.com/2.2/tags/'+inputTag+'/top-answerers/all_time';
+
+
+	var result = $.ajax({
+		url: tag,
+		data: request,
+		dataType: "jsonp",
+		type: "GET",
+		})
+	.done(function(result){
+		var searchResults = showSearchResults(request.tagged, result.items.length);
+
+		$('.search-results').html(searchResults);
+
+		$.each(result.items, function(i, item) {
+			var question = showAnswerers(item);
 			$('.results').append(question);
 		});
 	})
