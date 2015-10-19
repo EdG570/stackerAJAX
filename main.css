@@ -35,12 +35,65 @@
 }
 
 .result {
-	border: 1px solid black;
 	padding: 5px;
-	margin: 0 auto 1em auto;
+	margin: 2em auto 1em auto;
+  border-radius: 5px;
+  background-color: #eee;
 }
 
 .error {
 	background-color: #F78181;
 	padding: 1em;
+}
+
+a {
+  text-decoration: none;
+  color: #FE7C00;
+}
+
+img {
+  border: 1px solid #333;
+  border-radius: 50%;
+  position: relative;
+  top: 3em;
+}
+
+.name-text {
+  position: relative;
+  left: 5em;
+  font-size: 2em;
+  bottom: 2em;
+}
+
+.reputation {
+  position: relative;
+  left: 15.5em;
+  bottom: 4.5em;
+
+}
+
+.rep-title {
+  position: relative;
+  left: 12.5em;
+  bottom: 3.4em;
+  font-weight: bold;
+}
+
+.score-title {
+  position: relative;
+  left: 12.5em;
+  bottom: 4em;
+  font-weight: bold;
+}
+
+.score {
+  position: relative;
+  left: 13.5em;
+  bottom: 5.2em;
+}
+
+input[type="submit"] {
+  background-color: orange;
+  border-radius: 5px;
+  border: none;
 }
